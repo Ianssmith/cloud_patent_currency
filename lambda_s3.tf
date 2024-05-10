@@ -1,6 +1,8 @@
 #define IAM role
 #define lambda
 #create s3 bucket
+# bucket: ian-patent-stock
+# region: us-east-1
 
 terraform {
   required_providers {
@@ -52,5 +54,30 @@ resource "aws_lambda_function" "lambda" {
 	handler="alphav"
 }
 
-
+resource "aws_iam_policy" "lambda_s3_put"{
+	name = "lambda_s3_put"
+	description = "a policy to give lambda access to s3"
 	
+	policy=jsonencode({
+		Version: "2012-10-17",
+		Statement:[{
+			Effect:"Allow",
+			Action:[ "logs:*" ],
+			Resource:"arn:aws:logs:*:*:*"
+		},
+		{
+			Effect:"Allow",
+			Action:[ "s3:*" ],
+			Resource:[
+				"arn:aws:s3:::ian-patent-stock",
+				"arn:aws:s3:::ian-patent-stock/*"
+			]
+		}]
+	})
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_s3_attach"{
+	role = "iam_for_lambda_ian"
+	policy_arn = "arn:aws:iam::866934333672:policy/lambda_s3_put"
+}
+
