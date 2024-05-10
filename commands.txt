@@ -1,0 +1,15 @@
+aws lambda update-function-configuration --function-name get_data_put_s3 --environment "Variables={alphav=myapikey}"
+aws lambda get-function-configuration --function-name get_data_put_s3
+
+aws lambda invoke --function-name get_data_put_s3 
+
+  aws lambda delete-function --function-name alphav
+  aws lambda delete-function --function-name get_data_put_s3
+  aws iam delete-policy --policy-arn arn:aws:iam::866934333672:policy/lambda_s3_put
+  aws iam detach-role-policy --role-name iam_for_lambda_ian --policy-arn arn:aws:iam::866934333672:policy/lambda_s3_put
+  aws iam delete-policy --policy-arn arn:aws:iam::866934333672:policy/lambda_s3_put
+  aws iam delete-role --role-name iam_for_lambda_ian
+
+aws lambda update-function-code --function-name get_data_put_s3 --zip-file fileb://lambda_s3.zip
+
+zip -u lambda_s3.zip alphav.py

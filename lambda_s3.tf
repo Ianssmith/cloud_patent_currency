@@ -39,19 +39,21 @@ resource "aws_iam_role" "iam_for_lambda_ian" {
   }
 }
 
-data "archive_file" "lambda"{
+data "archive_file" "alphav"{
 	type="zip"
-	source_file="${path.module}/src/alphav.py"
+	source_file="${path.module}/alphav.py"
 	output_path = "lambda_s3.zip"
 }
 
-resource "aws_lambda_function" "lambda" {
+resource "aws_lambda_function" "alphav" {
 	filename = "lambda_s3.zip"
 	function_name = "get_data_put_s3"
 	role = aws_iam_role.iam_for_lambda_ian.arn
+	publish = true
+	source_code_hash  = "${data.archive_file.alphav.output_base64sha256}"
 
 	runtime="python3.10"
-	handler="alphav"
+	handler="alphav.alphav"
 }
 
 resource "aws_iam_policy" "lambda_s3_put"{
@@ -62,22 +64,17 @@ resource "aws_iam_policy" "lambda_s3_put"{
 		Version: "2012-10-17",
 		Statement:[{
 			Effect:"Allow",
-			Action:[ "logs:*" ],
+			Action: "logs:*" ,
 			Resource:"arn:aws:logs:*:*:*"
 		},
 		{
 			Effect:"Allow",
-			Action:[ "s3:*" ],
+			Action: "s3:*" ,
 			Resource:[
 				"arn:aws:s3:::ian-patent-stock",
 				"arn:aws:s3:::ian-patent-stock/*"
 			]
 		}]
 	})
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_s3_attach"{
-	role = "iam_for_lambda_ian"
-	policy_arn = "arn:aws:iam::866934333672:policy/lambda_s3_put"
 }
 
