@@ -2,15 +2,24 @@ import boto3
 import botocore
 
 import json
+import os
+
+alphav = os.environ['alphav']
 
 s3 = boto3.client('s3')
+req = botocore.requests
+req2 = boto3.requests
+print(req)
+print(req2)
 
 def alphav(event, context):
     bucket = 'ian-patent-stock'
 
     data = {'somedata':42}
     search = 'AAPL'
-    filename = 'testing.json'
+    filename = f'{search}.json'
+    search = req2.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=AAPL&apikey={alphav}&datatype=json')
+    data = search.json()
 
     bytedata = bytes(json.dumps(data).encode('UTF-8'))
     s3.put_object(Bucket=bucket, Key=filename, Body=bytedata)
