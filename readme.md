@@ -12,3 +12,5 @@ google patents public data
 [<img src="./imgs/aws_stock_proj.drawio.png">](https://link-to-your-URL/)
 ## beginning db model wip
 [<img src="./imgs/db_model.png">](https://link-to-your-URL/)
+## creating lambda with s3 permissions with terraform
+[<img src="./imgs/s3_terra_lambda.png">](https://link-to-your-URL/)
