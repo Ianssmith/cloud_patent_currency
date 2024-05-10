@@ -18,3 +18,6 @@ google patents public data
 
 ## creating and attaching s3 access policy for lambda 
 [<img src="./imgs/create_attach_policy.png">](https://github.com/Ianssmith/cloud_patent_currency/blob/master/imgs/create_attach_policy.png)
+
+## Querying api and inserting into s3
+[<img src="./imgs/s3_data.png">](https://github.com/Ianssmith/cloud_patent_currency/blob/master/imgs/s3_data.png)
